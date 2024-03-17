@@ -39,7 +39,10 @@ app.post("/add", (req, res) => {
   res.redirect("/");
 });
 
-app.post("/edit", (req, res) => {});
+app.post("/edit", (req, res) => {
+  const updateItemRow = req.body.updatedItemId;
+  
+});
 
 app.post("/delete", (req, res) => {});
 
