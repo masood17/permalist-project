@@ -26,21 +26,41 @@ let items = [
   { id: 2, title: "Finish homework" },
 ];
 
-app.get("/", (req, res) => {
+
+
+
+
+
+app.get("/", async (req, res) => {
+  const response = await db.query("SELECT * FROM items ORDER BY id ASC");
+   items = response.rows;
+
   res.render("index.ejs", {
     listTitle: "Today",
     listItems: items,
   });
 });
 
-app.post("/add", (req, res) => {
+app.post("/add", async (req, res) => {
   const item = req.body.newItem;
-  items.push({ title: item });
-  res.redirect("/");
+  // items.push({ title: item });
+  try {
+     await db.query("INSERT INTO items (title) VALUES ($1);",
+     [item]
+    );
+    res.redirect("/");
+  } catch (error) {
+    console.log(error);
+  }
+  
 });
 
 app.post("/edit", (req, res) => {
   const updateItemRow = req.body.updatedItemId;
+  const itemToUpdate = req.body.updatedItemTitle;
+
+  
+  
   
 });
 
