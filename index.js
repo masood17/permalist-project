@@ -59,7 +59,16 @@ console.log(error);
   }
 });
 
-app.post("/delete", (req, res) => {});
+app.post("/delete", async (req, res) => {
+  const itemToDelete = req.body.deleteItemId;
+
+  try {
+    await db.query("DELETE FROM items WHERE id = $1;",[itemToDelete]);
+    res.redirect("/");
+  } catch (error) {
+    
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
