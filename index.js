@@ -26,14 +26,9 @@ let items = [
   { id: 2, title: "Finish homework" },
 ];
 
-
-
-
-
-
 app.get("/", async (req, res) => {
   const response = await db.query("SELECT * FROM items ORDER BY id ASC");
-   items = response.rows;
+  items = response.rows;
 
   res.render("index.ejs", {
     listTitle: "Today",
@@ -45,23 +40,23 @@ app.post("/add", async (req, res) => {
   const item = req.body.newItem;
   // items.push({ title: item });
   try {
-     await db.query("INSERT INTO items (title) VALUES ($1);",
-     [item]
-    );
+    await db.query("INSERT INTO items (title) VALUES ($1);", [item]);
     res.redirect("/");
   } catch (error) {
     console.log(error);
   }
-  
 });
 
-app.post("/edit", (req, res) => {
+app.post("/edit", async (req, res) => {
   const updateItemRow = req.body.updatedItemId;
   const itemToUpdate = req.body.updatedItemTitle;
 
-  
-  
-  
+  try {
+    await db.query("UPDATE items SET title = $1 WHERE id = $2;",[itemToUpdate, updateItemRow]);
+    res.redirect("/");
+  } catch (error) {
+console.log(error);
+  }
 });
 
 app.post("/delete", (req, res) => {});
